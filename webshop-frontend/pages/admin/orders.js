@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import Layout from '../../components/Layout';
 import axios from 'axios';
 
+const envApiUrl = process.env.NEXT_PUBLIC_API_URL;
+
 const AdminOrdersPage = () => {
   const [orders, setOrders] = useState([]);
 
@@ -11,13 +13,13 @@ const AdminOrdersPage = () => {
   }, []);
 
   const fetchOrders = () => {
-    axios.get('http://localhost:5000/api/orders')
+    axios.get(`https://${envApiUrl}/api/orders`)
       .then(response => setOrders(response.data))
       .catch(error => console.error('Error fetching orders:', error));
   };
 
   const updateOrderStatus = (orderId, newStatus) => {
-    axios.put(`http://localhost:5000/api/orders/${orderId}`, { order_status: newStatus })
+    axios.put(`http://${envApiUrl}/api/orders/${orderId}`, { order_status: newStatus })
       .then(() => {
         alert('Order status updated');
         fetchOrders();

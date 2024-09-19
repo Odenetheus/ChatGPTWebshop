@@ -4,6 +4,8 @@ import Layout from '../../../components/Layout';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 
+const envApiUrl = process.env.NEXT_PUBLIC_API_URL;
+
 const EditProductPage = () => {
   const [product, setProduct] = useState(null);
   const router = useRouter();
@@ -11,7 +13,7 @@ const EditProductPage = () => {
 
   useEffect(() => {
     if (id) {
-      axios.get(`http://localhost:5000/api/products/${id}`)
+      axios.get(`https://${envApiUrl}/api/products/${id}`)
         .then(response => setProduct(response.data))
         .catch(error => console.error('Error fetching product:', error));
     }
@@ -28,7 +30,7 @@ const EditProductPage = () => {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:5000/api/products/${id}`, product);
+      await axios.put(`https://${envApiUrl}/api/products/${id}`, product);
       alert('Product updated successfully');
       router.push('/admin/products');
     } catch (error) {

@@ -3,6 +3,9 @@ import React, { useState } from 'react';
 import Layout from '../../components/Layout';
 import axios from 'axios';
 
+
+const envApiUrl = process.env.NEXT_PUBLIC_API_URL;
+
 const AddProductPage = () => {
   const [product, setProduct] = useState({
     name: '',
@@ -10,6 +13,8 @@ const AddProductPage = () => {
     price: '',
     image_url: '',
     is_visible: 1,
+    category: '', // Added
+    stock: '',    // Added
   });
 
   const handleChange = e => {
@@ -23,9 +28,9 @@ const AddProductPage = () => {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/products', product);
+      await axios.post(`https://${envApiUrl}/api/products`, product);
       alert('Product added successfully');
-      setProduct({ name: '', description: '', price: '', image_url: '', is_visible: 1 });
+      setProduct({ name: '', description: '', price: '', image_url: '', is_visible: 1, category: '', stock: '' });
     } catch (error) {
       console.error('Error adding product:', error);
     }
@@ -68,7 +73,6 @@ const AddProductPage = () => {
           placeholder="Image URL"
           value={product.image_url}
           onChange={handleChange}
-          required
           style={{ width: '100%', padding: '10px', marginBottom: '10px' }}
         />
         <label style={{ display: 'block', marginBottom: '10px' }}>
@@ -80,29 +84,29 @@ const AddProductPage = () => {
           />
           {' '}Visible
         </label>
+        <input
+          type="text"
+          name="category"
+          placeholder="Category"
+          value={product.category}
+          onChange={handleChange}
+          style={{ width: '100%', padding: '10px', marginBottom: '10px' }}
+        />
+        <input
+          type="number"
+          name="stock"
+          placeholder="Stock Quantity"
+          value={product.stock}
+          onChange={handleChange}
+          required
+          style={{ width: '100%', padding: '10px', marginBottom: '10px' }}
+        />
         <button
           type="submit"
           style={{ backgroundColor: '#000', color: '#fff', padding: '10px', border: 'none', width: '100%' }}
         >
           Add Product
         </button>
-        <input
-  type="text"
-  name="category"
-  placeholder="Category"
-  value={product.category}
-  onChange={handleChange}
-  style={{ width: '100%', padding: '10px', marginBottom: '10px' }}
-        />
-        <input
-  type="number"
-  name="stock"
-  placeholder="Stock Quantity"
-  value={product.stock}
-  onChange={handleChange}
-  required
-  style={{ width: '100%', padding: '10px', marginBottom: '10px' }}
-/>
 
       </form>
     </Layout>

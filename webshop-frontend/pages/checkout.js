@@ -5,6 +5,8 @@ import { CartContext } from '../context/CartContext';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 
+const envApiUrl = process.env.NEXT_PUBLIC_API_URL;
+
 const CheckoutPage = () => {
   const { cart, clearCart } = useContext(CartContext);
   const [email, setEmail] = useState('');
@@ -18,7 +20,7 @@ const CheckoutPage = () => {
 
   const fetchPaymentMethods = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/payment_methods');
+      const response = await axios.get(`https://${envApiUrl}/api/payment_methods`);
       setPaymentMethods(response.data);
       if (response.data.length > 0) {
         setSelectedMethod(response.data[0].id);
@@ -31,7 +33,7 @@ const CheckoutPage = () => {
 // pages/checkout.js (Update the handleCheckout function)
 const handleCheckout = async () => {
     // Event tracking: Checkout initiated
-    await axios.post('http://localhost:5000/api/events', { event: 'checkout_initiated' });
+    await axios.post(`https://${envApiUrl}/api/events`, { event: 'checkout_initiated' });
   
     const orderDetails = cart.map(item => `${item.name} - $${item.price.toFixed(2)}`).join('\n');
     try {
@@ -43,17 +45,17 @@ const handleCheckout = async () => {
           alert('Embedded payment methods are not implemented in this demo.');
         } else if (method.type === 'http_chain') {
           // Handle HTTP request chain payment methods
-          const response = await axios.post('http://localhost:5000/api/process_payment', {
+          const response = await axios.post(`https://${envApiUrl}/api/process_payment`, {
             method_id: selectedMethod,
             payment_data: { email, orderDetails, amount: totalPrice },
           });
   
           if (response.status === 200) {
             // Event tracking: Payment confirmed
-            await axios.post('http://localhost:5000/api/events', { event: 'payment_confirmed' });
+            await axios.post(`https://${envApiUrl}/api/events`, { event: 'payment_confirmed' });
   
             // Send checkout data to backend
-            await axios.post('http://localhost:5000/api/checkout', {
+            await axios.post(`https://${envApiUrl}/api/checkout`, {
               email,
               cart,
             });

@@ -3,11 +3,12 @@ import { CartProvider } from '../context/CartContext';
 import '../styles/global.css';
 import { useEffect } from 'react';
 import axios from 'axios';
+const envApiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
     // Log page load event
-    axios.post('http://localhost:5000/api/events', { event: 'page_load' });
+    axios.post(`https://${envApiUrl}/api/events`, { event: 'page_load' });
   }, []);
 
   return (

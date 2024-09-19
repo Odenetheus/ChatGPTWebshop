@@ -6,6 +6,8 @@ import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import { CartContext } from '../../context/CartContext';
 
+const envApiUrl = process.env.NEXT_PUBLIC_API_URL;
+
 const ProductDetail = ({ product }) => {
   const { addToCart } = useContext(CartContext);
   const router = useRouter();
@@ -38,7 +40,7 @@ const ProductDetail = ({ product }) => {
 
 export async function getServerSideProps({ params }) {
   try {
-    const res = await axios.get(`http://localhost:5000/api/products/${params.id}`);
+    const res = await axios.get(`https://${envApiUrl}/api/products/${params.id}`);
     return {
       props: { product: res.data },
     };

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Layout from '../../../components/Layout';
 import axios from 'axios';
 import Link from 'next/link';
-
+const envApiUrl = process.env.NEXT_PUBLIC_API_URL;
 const PaymentMethodsAdmin = () => {
   const [methods, setMethods] = useState([]);
 
@@ -13,7 +13,7 @@ const PaymentMethodsAdmin = () => {
 
   const fetchPaymentMethods = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/payment_methods');
+      const response = await axios.get(`http://${envApiUrl}/api/payment_methods`);
       setMethods(response.data);
     } catch (error) {
       console.error('Error fetching payment methods:', error);
@@ -23,7 +23,7 @@ const PaymentMethodsAdmin = () => {
   const deleteMethod = async (id) => {
     if (confirm('Are you sure you want to delete this payment method?')) {
       try {
-        await axios.delete(`http://localhost:5000/api/payment_methods/${id}`);
+        await axios.delete(`http://${envApiUrl}/api/payment_methods/${id}`);
         fetchPaymentMethods();
       } catch (error) {
         console.error('Error deleting payment method:', error);

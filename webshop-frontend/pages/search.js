@@ -5,6 +5,8 @@ import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
+const envApiUrl = process.env.NEXT_PUBLIC_API_URL;
+
 const SearchPage = () => {
   const [products, setProducts] = useState([]);
   const router = useRouter();
@@ -12,7 +14,7 @@ const SearchPage = () => {
 
   useEffect(() => {
     if (q) {
-      axios.get(`http://localhost:5000/api/products/search?q=${encodeURIComponent(q)}`)
+      axios.get(`https://${envApiUrl}/api/products/search?q=${encodeURIComponent(q)}`)
         .then(response => setProducts(response.data))
         .catch(error => console.error('Error fetching search results:', error));
     }

@@ -3,12 +3,12 @@ import React, { useEffect, useState } from 'react';
 import Layout from '../../components/Layout';
 import axios from 'axios';
 import Link from 'next/link';
-
+const envApiUrl = process.env.NEXT_PUBLIC_API_URL;
 const AdminProductList = () => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/products?include_hidden=true')
+    axios.get(`https://${envApiUrl}/api/products?include_hidden=true`)
       .then(response => setProducts(response.data))
       .catch(error => console.error('Error fetching products:', error));
   }, []);
@@ -16,7 +16,7 @@ const AdminProductList = () => {
   const deleteProduct = async (id) => {
     if (confirm('Are you sure you want to delete this product?')) {
       try {
-        await axios.delete(`http://localhost:5000/api/products/${id}`);
+        await axios.delete(`https://${envApiUrl}/api/products/${id}`);
         setProducts(products.filter(product => product.id !== id));
       } catch (error) {
         console.error('Error deleting product:', error);

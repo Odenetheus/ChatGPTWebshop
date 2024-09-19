@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Layout from '../../../components/Layout';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-
+const envApiUrl = process.env.NEXT_PUBLIC_API_URL;
 const AddPaymentMethod = () => {
   const [method, setMethod] = useState({
     name: '',
@@ -24,7 +24,7 @@ const AddPaymentMethod = () => {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/payment_methods', method);
+      await axios.post(`http://${envApiUrl}/api/payment_methods`, method);
       alert('Payment method added successfully');
       router.push('/admin/payment-methods');
     } catch (error) {

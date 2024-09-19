@@ -4,6 +4,8 @@ import axios from 'axios';
 import Layout from '../components/Layout';
 import Link from 'next/link';
 
+const envApiUrl = process.env.NEXT_PUBLIC_API_URL;
+
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -16,13 +18,13 @@ const Home = () => {
 
   const fetchProducts = () => {
     const categoryQuery = selectedCategory ? `&category=${encodeURIComponent(selectedCategory)}` : '';
-    axios.get(`http://localhost:5000/api/products?${categoryQuery}`)
+    axios.get(`https://${envApiUrl}/api/products?${categoryQuery}`)
       .then(response => setProducts(response.data))
       .catch(error => console.error('Error fetching products:', error));
   };
 
   const fetchCategories = () => {
-    axios.get('http://localhost:5000/api/products?include_hidden=true')
+    axios.get(`https://${envApiUrl}/api/products?include_hidden=true`)
       .then(response => {
         const categories = [...new Set(response.data.map(product => product.category))];
         setCategories(categories);

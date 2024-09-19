@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import Layout from '../../components/Layout';
 import axios from 'axios';
 
+const envApiUrl = process.env.NEXT_PUBLIC_API_URL;
+
 const ReportsPage = () => {
   const [scheduledReports, setScheduledReports] = useState([]);
   const [email, setEmail] = useState('');
@@ -19,7 +21,7 @@ const ReportsPage = () => {
 
   const fetchScheduledReports = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/reports/schedule');
+      const response = await axios.get(`https://${envApiUrl}/api/reports/schedule`);
       setScheduledReports(response.data);
     } catch (error) {
       console.error('Error fetching scheduled reports:', error);
@@ -27,7 +29,7 @@ const ReportsPage = () => {
   };
 
   const handleDownload = (type) => {
-    window.location.href = `http://localhost:5000/api/reports/sales?type=${type}`;
+    window.location.href = `https://${envApiUrl}/api/reports/sales?type=${type}`;
   };
 
   const handleSchedule = async (e) => {
@@ -39,7 +41,7 @@ const ReportsPage = () => {
       scheduleData.day = parseInt(day);
     }
     try {
-      await axios.post('http://localhost:5000/api/reports/schedule', {
+      await axios.post(`https://${envApiUrl}/api/reports/schedule`, {
         email,
         report_type: reportType,
         schedule: scheduleData

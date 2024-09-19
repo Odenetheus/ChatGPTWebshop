@@ -426,5 +426,5 @@ def update_order_status(order_id):
     else:
         return jsonify({'error': 'Invalid data'}), 400
 
-if __name__ == '__main__':
-    app.run(debug=True)
+#if __name__ == '__main__':
+#    app.run(debug=True)
